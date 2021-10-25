@@ -4,7 +4,7 @@
 * of this assignment has been copied manually or electronically from any other source 
 * (including 3rd party web sites) or distributed to other students.
 * 
-* Name: __Sahar Hosseinichegeni____________________ Student ID: _139670202___ Date: _21-10-24___
+* Name: Sahar HosseiniChegeni Student ID: 139670202   Date: 21-10-24
 *
 * Online (Heroku) Link: 
 ********************************************************************************/
