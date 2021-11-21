@@ -10,8 +10,7 @@ module.exports.addEmployee = function (employeeData) {
         
        if (typeof employeeData.isManager === "undefined") {
             employeeData.isManager = false;
-       } 
-       else {
+       } else {
             employeeData.isManager = true;
        }
 
@@ -24,7 +23,6 @@ module.exports.addEmployee = function (employeeData) {
 
 };
 //*****************************************************************/
-
 module.exports.getEmployeesByStatus = function (statusId) {
     var emp = [];
     var promise = new Promise((resolve, reject) => {
@@ -43,8 +41,8 @@ module.exports.getEmployeesByStatus = function (statusId) {
     return promise;
 
 };
-//*****************************************************************/
 
+//*****************************************************************/
 module.exports.getEmployeesByDepartment = function (departmentId) {
 
     var emp = [];
@@ -55,26 +53,30 @@ module.exports.getEmployeesByDepartment = function (departmentId) {
                emp.push(employees[i]);
            }
        }
+
        if(emp.length === 0) {
         var err = "getEmployeesByDepartment() Not Filled.";
         reject({message: err});
        }  
+
     resolve (emp);
     })
     return promise;
 
 };
-//*****************************************************************/
 
+//*****************************************************************/
 module.exports.getEmployeesByManager = function (managerBool) {
    
     var emp = [];
     var promise = new Promise((resolve, reject) => {
+      
        for (var i=0; i < employees.length; i++){
            if (employees[i].isManager == managerBool) {
                emp.push(employees[i]);
            }
        }
+
        if(emp.length === 0) {
         var err = "getEmployeesByManager() Not Filled.";
         reject({message: err});
@@ -85,29 +87,35 @@ module.exports.getEmployeesByManager = function (managerBool) {
     return promise;
 
 };
-//*****************************************************************/
 
+//*****************************************************************/
 module.exports.getEmployeeByNum = function (num) {
-      var emp;
-      var promise = new Promise((resolve, reject) => {
-        
-         for (var i=0; i < employees.length; i++){
-             if (employees[i].employeeNum == num) {
-                 emp = employees[i];
-                 i = employees.length;
-             }
-         } 
-         if(emp === "undefined") {
-          var err = "getEmployeesByNum() Not Filled.";
-          reject({message: err});
-         }  
-      resolve (emp);
-      })
-      return promise;
-  };
+  //  console.log (num);
+    var emp;
+    var promise = new Promise((resolve, reject) => {
+      
+       for (var i=0; i < employees.length; i++){
+           if (employees[i].employeeNum == num) {
+             //  console.log (num + employees[i]);
+               emp = employees[i];
+               i = employees.length;
+           }
+       }
+
+       if(emp === "undefined") {
+        var err = "getEmployeesByNum() Not Filled.";
+        reject({message: err});
+       }  
+
+    resolve (emp);
+    })
+    return promise;
+
+};
 //*****************************************************************/
 
-exports.initialize = function () {
+module.exports.initialize = function () {
+
     var promise = new Promise((resolve, reject) => {
         try {
             fs.readFile('./data/employees.json', (err, data) => {
@@ -121,27 +129,28 @@ exports.initialize = function () {
                 console.log("departments correctly loaded.");
             })
         } catch (ex) {
-                      console.log("Initialize failed.");
-                      reject("Initialize failed.");
+                        console.log("Initialize failed.");
+                        reject("Initialize failed.");
                      }
-        console.log("Initialize successful!.");
-        resolve("Initialize successful!.");
+                     console.log("Initialize successful!.");
+                     resolve("Initialize successful!.");
     })
+
     return promise;
 };
-//**************************************************************/
-exports.getAllEmployees = function () {
+//*****************************************************************/
+module.exports.getAllEmployees = function () {
     var promise = new Promise((resolve, reject) => {
        if(employees.length === 0) {
         var err = "No results returned.";
         reject({message: err});
        }  
+
     resolve (employees);
     })
     return promise;
 };
-
-//*************************************************************/
+//*****************************************************************/
 exports.getManagers = function () {
     var managersLength = [];
     var promise = new Promise((resolve, reject) => {
@@ -158,8 +167,7 @@ exports.getManagers = function () {
     })
     return promise;
 };
-
-//***************************************************************/
+//*****************************************************************/
 exports.getDepartments = function () {
     var promise = new Promise((resolve, reject) => {
         if(departments.length === 0) {
@@ -167,6 +175,26 @@ exports.getDepartments = function () {
          reject({message: err});
         }  
      resolve (departments);
+     })
+     return promise;
+};
+
+//***************************************************************/
+module.exports.updateEmployee = function (employeeData) {
+
+    var isFound = false;
+    var promise = new Promise((resolve, reject) => {
+        for (var i=0; i < employees.length; i++){
+            if (employees[i].employeeNum == employeeData.employeeNum) {
+                employees[i] = employeeData;
+                isFound = true;
+            }
+        }
+        if(isFound === false) {
+         var err = "Cannot find employee to update.";
+         reject({message: err});
+        }  
+        resolve (employees);
      })
      return promise;
 };
